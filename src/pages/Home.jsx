@@ -223,7 +223,7 @@ export default function Home() {
               <div className="flip-photo">
                 <img src="/goldan-back.jpeg" alt="Goldan" />
               </div>
-              <div className="flip-caption b">caught in 4K 💀</div>
+              <div className="flip-caption b">mode kak seto</div>
             </div>
           </div>
         </div>
