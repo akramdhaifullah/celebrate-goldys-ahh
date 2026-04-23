@@ -217,7 +217,7 @@ export default function Home() {
               <div className="flip-photo">
                 <img src="/goldan-front.jpg" alt="Goldan" />
               </div>
-              <div className="flip-caption">Goldan, 2024</div>
+              <div className="flip-caption">Goldan, 2017</div>
             </div>
             <div className="flip-face back">
               <div className="flip-photo">
