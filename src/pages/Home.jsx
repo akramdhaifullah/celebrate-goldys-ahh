@@ -6,20 +6,20 @@ const BatikDefs = () => (
   <svg style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden' }}>
     <defs>
       <pattern id="bk" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
-        <circle cx="18" cy="9"  r="7"   fill="none" stroke="#2C2C2C" strokeWidth="0.9"/>
-        <circle cx="18" cy="27" r="7"   fill="none" stroke="#2C2C2C" strokeWidth="0.9"/>
-        <circle cx="9"  cy="18" r="7"   fill="none" stroke="#2C2C2C" strokeWidth="0.9"/>
-        <circle cx="27" cy="18" r="7"   fill="none" stroke="#2C2C2C" strokeWidth="0.9"/>
-        <polygon points="18,13 22,18 18,23 14,18" fill="none" stroke="#2C2C2C" strokeWidth="0.7"/>
-        <circle cx="18" cy="18" r="1.5" fill="#2C2C2C"/>
-        <line x1="18" y1="3"  x2="18" y2="6.5" stroke="#2C2C2C" strokeWidth="0.55"/>
-        <line x1="18" y1="31" x2="18" y2="33.5" stroke="#2C2C2C" strokeWidth="0.55"/>
-        <line x1="3"  y1="18" x2="6.5" y2="18"  stroke="#2C2C2C" strokeWidth="0.55"/>
-        <line x1="31" y1="18" x2="33.5" y2="18" stroke="#2C2C2C" strokeWidth="0.55"/>
-        <circle cx="0"  cy="0"  r="0.9" fill="#2C2C2C"/>
-        <circle cx="36" cy="0"  r="0.9" fill="#2C2C2C"/>
-        <circle cx="0"  cy="36" r="0.9" fill="#2C2C2C"/>
-        <circle cx="36" cy="36" r="0.9" fill="#2C2C2C"/>
+        <circle cx="18" cy="9" r="7" fill="none" stroke="#2C2C2C" strokeWidth="0.9" />
+        <circle cx="18" cy="27" r="7" fill="none" stroke="#2C2C2C" strokeWidth="0.9" />
+        <circle cx="9" cy="18" r="7" fill="none" stroke="#2C2C2C" strokeWidth="0.9" />
+        <circle cx="27" cy="18" r="7" fill="none" stroke="#2C2C2C" strokeWidth="0.9" />
+        <polygon points="18,13 22,18 18,23 14,18" fill="none" stroke="#2C2C2C" strokeWidth="0.7" />
+        <circle cx="18" cy="18" r="1.5" fill="#2C2C2C" />
+        <line x1="18" y1="3" x2="18" y2="6.5" stroke="#2C2C2C" strokeWidth="0.55" />
+        <line x1="18" y1="31" x2="18" y2="33.5" stroke="#2C2C2C" strokeWidth="0.55" />
+        <line x1="3" y1="18" x2="6.5" y2="18" stroke="#2C2C2C" strokeWidth="0.55" />
+        <line x1="31" y1="18" x2="33.5" y2="18" stroke="#2C2C2C" strokeWidth="0.55" />
+        <circle cx="0" cy="0" r="0.9" fill="#2C2C2C" />
+        <circle cx="36" cy="0" r="0.9" fill="#2C2C2C" />
+        <circle cx="0" cy="36" r="0.9" fill="#2C2C2C" />
+        <circle cx="36" cy="36" r="0.9" fill="#2C2C2C" />
       </pattern>
     </defs>
   </svg>
@@ -27,12 +27,12 @@ const BatikDefs = () => (
 
 const BatikStrips = () => (
   <>
-    <div className="batik-l"><svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#bk)"/></svg></div>
-    <div className="batik-r"><svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#bk)"/></svg></div>
+    <div className="batik-l"><svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#bk)" /></svg></div>
+    <div className="batik-r"><svg width="100%" height="100%"><rect width="100%" height="100%" fill="url(#bk)" /></svg></div>
   </>
 )
 
-const ROTS = [-3.2,1.8,-1.4,3.6,-2.1,0.9,-3.8,2.4,-0.9,3.1,-2.5,1.3]
+const ROTS = [-3.2, 1.8, -1.4, 3.6, -2.1, 0.9, -3.8, 2.4, -0.9, 3.1, -2.5, 1.3]
 
 // ── Home page ─────────────────────────────────────────────────────────────────
 export default function Home() {
@@ -47,7 +47,7 @@ export default function Home() {
   // lightbox
   const [lb, setLb] = useState(null) // { cap, ssn, imgSrc, bg, fromRect }
   const lbCardRef = useRef(null)
-  const lbBgRef   = useRef(null)
+  const lbBgRef = useRef(null)
   const lbSrcRect = useRef(null)
 
   // wishes
@@ -68,7 +68,7 @@ export default function Home() {
         sig: `\u2014 ${m.name}`,
       }))
       if (derived.length) setWishes(derived)
-    }).catch(() => {})
+    }).catch(() => { })
   }, [])
 
   // ── Flip hint on hover ─────────────────────────────────────────────────────
@@ -84,12 +84,12 @@ export default function Home() {
   }, [])
 
   const onMouseDown = e => { dragStartX.current = e.clientX }
-  const onMouseUp   = e => {
+  const onMouseUp = e => {
     if (dragStartX.current !== null && Math.abs(e.clientX - dragStartX.current) > 28) doFlip()
     dragStartX.current = null
   }
   const onTouchStart = e => { touchStartX.current = e.changedTouches[0].clientX }
-  const onTouchEnd   = e => {
+  const onTouchEnd = e => {
     if (touchStartX.current !== null && Math.abs(e.changedTouches[0].clientX - touchStartX.current) > 28) doFlip()
     touchStartX.current = null
   }
@@ -108,16 +108,16 @@ export default function Home() {
       const cw = LBW()
       const cx = window.innerWidth / 2, cy = window.innerHeight / 2
       const sx = rect.left + rect.width / 2 - cx
-      const sy = rect.top  + rect.height / 2 - cy
+      const sy = rect.top + rect.height / 2 - cy
       const ss = rect.width / cw
       lbCardRef.current.style.transition = 'none'
-      lbCardRef.current.style.opacity    = '0.3'
-      lbCardRef.current.style.transform  = `translate(${sx}px,${sy}px) scale(${ss}) rotate(-1deg)`
+      lbCardRef.current.style.opacity = '0.3'
+      lbCardRef.current.style.transform = `translate(${sx}px,${sy}px) scale(${ss}) rotate(-1deg)`
       requestAnimationFrame(() => requestAnimationFrame(() => {
         if (!lbCardRef.current) return
         lbCardRef.current.style.transition = 'transform 0.85s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease'
-        lbCardRef.current.style.opacity    = '1'
-        lbCardRef.current.style.transform  = 'translate(0,0) scale(1) rotate(-0.5deg)'
+        lbCardRef.current.style.opacity = '1'
+        lbCardRef.current.style.transform = 'translate(0,0) scale(1) rotate(-0.5deg)'
       }))
     }))
   }
@@ -128,11 +128,11 @@ export default function Home() {
     const cw = LBW()
     const cx = window.innerWidth / 2, cy = window.innerHeight / 2
     const ex = rect.left + rect.width / 2 - cx
-    const ey = rect.top  + rect.height / 2 - cy
+    const ey = rect.top + rect.height / 2 - cy
     const es = rect.width / cw
     lbCardRef.current.style.transition = 'transform 0.85s cubic-bezier(0.22,1,0.36,1), opacity 0.18s ease 0.7s'
-    lbCardRef.current.style.opacity    = '0'
-    lbCardRef.current.style.transform  = `translate(${ex}px,${ey}px) scale(${es}) rotate(-1deg)`
+    lbCardRef.current.style.opacity = '0'
+    lbCardRef.current.style.transform = `translate(${ex}px,${ey}px) scale(${es}) rotate(-1deg)`
     if (lbBgRef.current) lbBgRef.current.style.opacity = '0'
     setTimeout(() => { setLb(null); lbSrcRect.current = null }, 900)
   }
@@ -140,7 +140,7 @@ export default function Home() {
   // ── Wishes navigation ──────────────────────────────────────────────────────
   const animWish = dir => {
     const outX = dir === 'r' ? '-18px' : '18px'
-    const inX  = dir === 'r' ? '18px'  : '-18px'
+    const inX = dir === 'r' ? '18px' : '-18px'
     setCardAnim({ opacity: 0, x: outX })
     setTimeout(() => {
       setCur(c => dir === 'r' ? (c + 1) % wishes.length : (c - 1 + wishes.length) % wishes.length)
@@ -149,7 +149,7 @@ export default function Home() {
     }, 180)
   }
   const onWishTouchStart = e => { wishTouchX.current = e.changedTouches[0].clientX }
-  const onWishTouchEnd   = e => {
+  const onWishTouchEnd = e => {
     const dx = e.changedTouches[0].clientX - wishTouchX.current
     if (Math.abs(dx) > 40) animWish(dx < 0 ? 'r' : 'l')
   }
@@ -192,7 +192,7 @@ export default function Home() {
           style={{ height: 'clamp(28px,3vw,42px)', width: 'auto', marginBottom: 'clamp(14px,2.5vh,24px)', position: 'relative', zIndex: 1 }}
         />
         <div className="hero-eyebrow">a birthday dedication</div>
-        <div className="hero-title">Celebrating<br/>Twenty-Four Years<br/>of Goldan</div>
+        <div className="hero-title">Celebrating<br />Twenty-Four Years<br />of Goldan</div>
         <div className="hero-divider" />
         <div className="hero-scroll">Scroll down</div>
       </section>
@@ -215,13 +215,13 @@ export default function Home() {
           >
             <div className="flip-face front">
               <div className="flip-photo">
-                <span style={{ fontStyle: 'italic', fontSize: 'clamp(12px,1.2vw,16px)', color: '#8B7D6B' }}>hero portrait</span>
+                <img src="/goldan-front.jpg" alt="Goldan" />
               </div>
               <div className="flip-caption">Goldan, 2024</div>
             </div>
             <div className="flip-face back">
-              <div className="flip-photo goofy">
-                😂<span style={{ fontSize: 'clamp(12px,1.2vw,18px)', color: '#A50044', fontStyle: 'italic' }}>the real Goldan</span>
+              <div className="flip-photo">
+                <img src="/goldan-back.jpeg" alt="Goldan" />
               </div>
               <div className="flip-caption b">caught in 4K 💀</div>
             </div>
