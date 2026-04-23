@@ -48,7 +48,7 @@ export default function Upload() {
       setSent(true)
     } catch (err) {
       console.error(err)
-      alert('Something went wrong — please try again.')
+      alert(`Upload failed: ${err?.message || JSON.stringify(err)}`)
     } finally {
       setLoading(false)
     }
