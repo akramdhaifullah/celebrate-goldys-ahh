@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { getMemories, getWishes } from '../lib/storage.js'
+import { getMemories } from '../lib/storage.js'
 
 // ── Batik SVG pattern (shared) ───────────────────────────────────────────────
 const BatikDefs = () => (
@@ -32,29 +32,7 @@ const BatikStrips = () => (
   </>
 )
 
-// ── Static board data ─────────────────────────────────────────────────────────
-const STATIC_PHOTOS = [
-  { ph: 'ph1',  cap: "summer '19", lbCap: 'a lazy afternoon',  ssn: 'Summer · 2019', tape: true,  tapeW: 34, tapeBg: 'rgba(237,187,0,0.42)',  tapeRot: -2  },
-  { ph: 'ph2',  cap: 'grad day',   lbCap: 'graduation day',    ssn: 'Autumn · 2020', pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#ff8a8a,#A50044)' },
-  { ph: 'ph3',  cap: "winter '21", lbCap: 'first snow',        ssn: 'Winter · 2021', tape: true,  tapeW: 38, tapeBg: 'rgba(165,0,68,0.28)',   tapeRot:  3  },
-  { ph: 'ph4',  cap: "spring '22", lbCap: 'cherry blossoms',   ssn: 'Spring · 2022', pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#90b8e8,#004D98)' },
-  { ph: 'ph5',  cap: "beach '22",  lbCap: 'beach trip',        ssn: 'Summer · 2022', tape: true,  tapeW: 40, tapeBg: 'rgba(237,187,0,0.38)',  tapeRot: -1  },
-  { ph: 'ph6',  cap: "city '22",   lbCap: 'city walks',        ssn: 'Autumn · 2022', pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#ffe066,#c89000)' },
-  { ph: 'ph7',  cap: "nye '22",    lbCap: "new year's eve",    ssn: 'Winter · 2022', tape: true,  tapeW: 36, tapeBg: 'rgba(237,187,0,0.4)',   tapeRot:  2  },
-  { ph: 'ph8',  cap: "road '23",   lbCap: 'road trip',         ssn: 'Spring · 2023', pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#ff8a8a,#A50044)' },
-  { ph: 'ph9',  cap: "fest '23",   lbCap: 'festival night',    ssn: 'Summer · 2023', tape: true,  tapeW: 38, tapeBg: 'rgba(165,0,68,0.24)',   tapeRot: -3  },
-  { ph: 'ph10', cap: "hike '23",   lbCap: 'hiking day',        ssn: 'Autumn · 2023', pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#90e090,#2a7a2a)' },
-  { ph: 'ph11', cap: "xmas '23",   lbCap: 'holiday vibes',     ssn: 'Winter · 2023', tape: true,  tapeW: 34, tapeBg: 'rgba(237,187,0,0.42)',  tapeRot:  1  },
-  { ph: 'ph12', cap: 'right now',  lbCap: 'right now',         ssn: null,            pin: true,   pinBg:  'radial-gradient(circle at 35% 35%,#ff8a8a,#A50044)' },
-]
-
 const ROTS = [-3.2,1.8,-1.4,3.6,-2.1,0.9,-3.8,2.4,-0.9,3.1,-2.5,1.3]
-
-const STATIC_WISHES = [
-  { msg: '"Goldan, watching you grow into the person you are today has been one of the greatest joys. Here\'s to twenty-four — may it be your most vivid year yet."', sig: '— Naya' },
-  { msg: '"You\'ve always had this rare gift of making everyone feel like they matter. The world is genuinely better with you in it. Happy birthday, G."', sig: '— Rafi' },
-  { msg: '"From that first day to right now — you remain one of the most genuine people I know. Wishing you your brightest year."', sig: '— Dira' },
-]
 
 // ── Home page ─────────────────────────────────────────────────────────────────
 export default function Home() {
@@ -73,7 +51,7 @@ export default function Home() {
   const lbSrcRect = useRef(null)
 
   // wishes
-  const [wishes, setWishes] = useState(STATIC_WISHES)
+  const [wishes, setWishes] = useState([])
   const [cur, setCur] = useState(0)
   const [cardAnim, setCardAnim] = useState({ opacity: 1, x: 0 })
   const wishTouchX = useRef(null)
@@ -81,11 +59,16 @@ export default function Home() {
   // uploaded memories
   const [uploads, setUploads] = useState([])
 
-  // ── Load uploads + extra wishes on mount ──────────────────────────────────
+  // ── Load uploads + wishes from Supabase on mount ─────────────────────────
   useEffect(() => {
-    getMemories().then(mems => setUploads(mems)).catch(() => {})
-    const extra = getWishes()
-    if (extra.length) setWishes(w => [...w, ...extra])
+    getMemories().then(mems => {
+      setUploads(mems)
+      const derived = mems.map(m => ({
+        msg: `\u201c${m.message}\u201d`,
+        sig: `\u2014 ${m.name}`,
+      }))
+      if (derived.length) setWishes(derived)
+    }).catch(() => {})
   }, [])
 
   // ── Flip hint on hover ─────────────────────────────────────────────────────
@@ -253,24 +236,6 @@ export default function Home() {
         <div className="cork-wrap">
           <div className="cork-board">
             <div className="board-grid">
-              {STATIC_PHOTOS.map((p, i) => (
-                <div className="board-item" key={i}>
-                  {p.tape && (
-                    <div className="tape" style={{ width: p.tapeW, background: p.tapeBg, transform: `translateX(-50%) rotate(${p.tapeRot}deg)` }} />
-                  )}
-                  {p.pin && (
-                    <div className="pin" style={{ background: p.pinBg }} />
-                  )}
-                  <div
-                    className="board-polaroid"
-                    onClick={e => openLb(e, p.lbCap, p.ssn, null, `var(--ph-${p.ph})`)}
-                  >
-                    <div className={`board-photo ${p.ph}`} />
-                    <div className="board-caption">{p.cap}</div>
-                  </div>
-                </div>
-              ))}
-
               {/* Uploaded memories */}
               {uploads.map((m, i) => {
                 const rot = ROTS[i % ROTS.length]
