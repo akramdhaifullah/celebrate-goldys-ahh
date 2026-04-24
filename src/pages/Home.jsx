@@ -54,6 +54,7 @@ export default function Home() {
   const [wishes, setWishes] = useState([])
   const [cur, setCur] = useState(0)
   const [cardAnim, setCardAnim] = useState({ opacity: 1, x: 0 })
+  const [revealed, setRevealed] = useState(false)
   const wishTouchX = useRef(null)
 
   // uploaded memories
@@ -142,6 +143,7 @@ export default function Home() {
     const outX = dir === 'r' ? '-18px' : '18px'
     const inX = dir === 'r' ? '18px' : '-18px'
     setCardAnim({ opacity: 0, x: outX })
+    setRevealed(false)
     setTimeout(() => {
       setCur(c => dir === 'r' ? (c + 1) % wishes.length : (c - 1 + wishes.length) % wishes.length)
       setCardAnim({ opacity: 0, x: inX })
@@ -270,8 +272,6 @@ export default function Home() {
         onTouchStart={onWishTouchStart}
         onTouchEnd={onWishTouchEnd}
       >
-        <div className="wz-l" onClick={() => animWish('l')} />
-        <div className="wz-r" onClick={() => animWish('r')} />
         <BatikStrips />
         <div className="w-content">
           <div style={{ marginBottom: 'clamp(12px,2vh,20px)' }}><span className="lbl red">WISHES</span></div>
@@ -279,21 +279,35 @@ export default function Home() {
             Words of Love
           </div>
           <div style={{ fontSize: 'clamp(11px,1.1vw,14px)', color: '#8B7D6B', fontStyle: 'italic', marginBottom: 'clamp(20px,3vh,36px)' }}>
-            Click anywhere left or right · Swipe on touch
+            Swipe on touch to navigate
           </div>
-          <div className="w-card-wrap">
-            <div
-              className="w-card"
-              style={{
-                opacity: cardAnim.opacity,
-                transform: `translateX(${cardAnim.x})`,
-                transition: cardAnim.opacity === 1 ? 'opacity .28s, transform .28s' : 'opacity .18s, transform .18s',
-              }}
-            >
-              <div className="w-msg">{wishes[cur]?.msg}</div>
-              <div className="w-sig">{wishes[cur]?.sig}</div>
+          
+          <div className="w-slider-container">
+            <button className="w-nav-btn prev" onClick={() => animWish('l')} aria-label="Previous wish">‹</button>
+            
+            <div className="w-card-wrap">
+              <div
+                className="w-card"
+                style={{
+                  opacity: cardAnim.opacity,
+                  transform: `translateX(${cardAnim.x})`,
+                  transition: cardAnim.opacity === 1 ? 'opacity .28s, transform .28s' : 'opacity .18s, transform .18s',
+                }}
+              >
+                <div className="w-msg">{wishes[cur]?.msg}</div>
+                <div 
+                  className={`w-sig-wrap${revealed ? ' revealed' : ''}`}
+                  onClick={() => setRevealed(true)}
+                >
+                  <div className="w-sig-placeholder">click to reveal</div>
+                  <div className="w-sig">{wishes[cur]?.sig}</div>
+                </div>
+              </div>
             </div>
+
+            <button className="w-nav-btn next" onClick={() => animWish('r')} aria-label="Next wish">›</button>
           </div>
+
           <div className="dots">
             {wishes.map((_, i) => <div key={i} className={`dot${i === cur ? ' on' : ''}`} />)}
           </div>
