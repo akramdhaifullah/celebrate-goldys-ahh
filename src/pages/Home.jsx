@@ -63,8 +63,20 @@ export default function Home() {
   // ── Load uploads + wishes from Supabase on mount ─────────────────────────
   useEffect(() => {
     getMemories().then(mems => {
-      setUploads(mems)
-      const derived = mems.map(m => ({
+      // Shuffle function
+      const shuffle = (array) => {
+        const arr = [...array]
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]]
+        }
+        return arr
+      }
+
+      const shuffledMems = shuffle(mems)
+      setUploads(shuffledMems)
+
+      const derived = shuffledMems.map(m => ({
         msg: `\u201c${m.message}\u201d`,
         sig: `\u2014 ${m.name}`,
       }))
@@ -308,8 +320,8 @@ export default function Home() {
             <button className="w-nav-btn next" onClick={() => animWish('r')} aria-label="Next wish">›</button>
           </div>
 
-          <div className="dots">
-            {wishes.map((_, i) => <div key={i} className={`dot${i === cur ? ' on' : ''}`} />)}
+          <div className="w-pagination">
+            {wishes.length > 0 && `${cur + 1} / ${wishes.length}`}
           </div>
         </div>
       </section>
